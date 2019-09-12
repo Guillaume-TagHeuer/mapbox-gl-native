@@ -6,7 +6,7 @@
 // initialized by the platform at linking time.
 
 #ifndef NDEBUG
-#define MBGL_CHECK_ERROR(cmd) ([&]() { struct __MBGL_CHECK_ERROR { ~__MBGL_CHECK_ERROR() noexcept(false) { mbgl::platform::glCheckError(#cmd, __FILE__, __LINE__); } } __MBGL_CHECK_ERROR; return cmd; }())
+#define MBGL_CHECK_ERROR(cmd) ([&]() { struct __MBGL_CHECK_ERROR { ~__MBGL_CHECK_ERROR() noexcept(false) { mbgl::platform::glCheckError(#cmd, __FILE_NAME__, __LINE__); } } __MBGL_CHECK_ERROR; return cmd; }())
 #else
 #define MBGL_CHECK_ERROR(cmd) (cmd)
 #endif
