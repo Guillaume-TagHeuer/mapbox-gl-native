@@ -404,6 +404,21 @@ const CGFloat MGLSnapshotterMinimumPixelSize = 64;
     
     [sourceImageRep drawInRect: targetFrame];
     
+    NSGraphicsContext *currentContext = [NSGraphicsContext currentContext];
+    if (currentContext && overlayHandler) {
+        MGLMapSnapshotOverlay *snapshotOverlay = [[MGLMapSnapshotOverlay alloc] initWithContext:currentContext.CGContext];
+        [currentContext saveGraphicsState];
+        overlayHandler(snapshotOverlay);
+        [currentContext restoreGraphicsState];
+        currentContext = [NSGraphicsContext currentContext];
+    }
+    
+    if (!currentContext && overlayHandler) {
+        // If the current context has been corrupted by the user,
+        // return nil so we can generate an error later.
+        return nil;
+    }
+    
     if (logoImage) {
         [logoImage drawInRect:logoImageRect];
     }
